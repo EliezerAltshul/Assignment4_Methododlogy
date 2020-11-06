@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class BalanceTrackerTEST {
 	private IRandomValueGenerator random;
 	private BalanceTracker tracker;
-	
+
 	@Before
     public void init() {
     	random = new MockRandomizer();
@@ -24,7 +24,7 @@ public class BalanceTrackerTEST {
     }*/
 	
 	
-	@Test
+	@Test 
 	public void TestCanBetMethodFalse() {
 		assertFalse(tracker.canBet(200));
 	}
@@ -46,6 +46,12 @@ public class BalanceTrackerTEST {
 		assertEquals(tracker.betOnANumber(50, 0, 10, 5), -500, 10);
 	}
 	
+	@Test
+	public void TestBetonNumberMethodWhenCantPlaceBet() {
+		random.setNextInt(4);
+		assertEquals(tracker.betOnANumber(50000, 0, 10, 5), 0, 10);
+	}
+	
 	
 	@Test
 	public void TestBetonProbabilityMethodSuccess() throws IncorrectProbability {
@@ -57,6 +63,12 @@ public class BalanceTrackerTEST {
 	public void TestBetonProbabilityMethodFail() throws IncorrectProbability {
 		random.setNextDouble(.5);
 		assertEquals(tracker.betOnProbability(100, .3), -233, 10);
+	}
+	
+	@Test
+	public void TestBetonProbabilityMethodWhenCantPlaceBet() throws IncorrectProbability{
+		random.setNextDouble(.5);
+		assertEquals(tracker.betOnProbability(100000, .3), 0, 10);
 	}
 
 }
